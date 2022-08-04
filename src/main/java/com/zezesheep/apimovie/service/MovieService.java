@@ -33,8 +33,25 @@ public class MovieService {
 		return moviesReturned;
 	}
 	
+	public MovieDTO getOne(Long id) throws Exception{
+		Movie movieFromTable = movieRepository.findById(id).orElseThrow(() -> new Exception("Movie " + id +" not found."));
+		return modelMapper.map(movieFromTable, MovieDTO.class);
+	}
+	
 	public MovieDTO create(MovieDTO newMovie) {
-		return null;
+		Movie moveToBeSaved = modelMapper.map(newMovie, Movie.class);
+		Movie savedMovie = movieRepository.save(moveToBeSaved);
+		return modelMapper.map(savedMovie, MovieDTO.class);
+	}
+
+	public void delete(Long id) {
+		movieRepository.deleteById(id);
+	}
+	
+	public MovieDTO update(MovieDTO movieUpdated) {
+		Movie moveToBeSaved = modelMapper.map(movieUpdated, Movie.class);
+		Movie savedMovie = movieRepository.save(moveToBeSaved);
+		return modelMapper.map(savedMovie, MovieDTO.class);
 	}
 	
 
